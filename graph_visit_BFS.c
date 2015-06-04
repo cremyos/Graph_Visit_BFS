@@ -14,6 +14,9 @@
 
 int visit[MAX_VERTEX_NUM]={0};
 
+/* 
+ *Create the Adjacency list
+ */
 ALGraph* create(ALGraph *G)
 {
 	int i,j;
@@ -57,34 +60,46 @@ ALGraph* create(ALGraph *G)
 	printf("finish the Adjacency List\n");
 	return G;
 }
-	
-void BFS(ALGraph *G)
+
+/*
+ *BFS visit
+ *We need a queue to help
+ */
+void BFSTraverse(ALGraph *G)
 {
-	int i=0;
+	int i;
+	
+	for(i=0;i<G->vexnum;i++)
+		BFS(G,i);
+}
+	
+void BFS(ALGraph *G,int i)
+{
+	int j=0,k=0;
 	ArcNode *arc;
 	Queue_Ptr p;
 	int u=0;
 
 	p=InitQueue(p);
-	arc = (ArcNode *)malloc(sizeof(ArcNode));
-	for(i=0;i<G->vexnum;i++)
+	if(!visit[i])
 	{
-		if(!visit[i])
+		printf("%c -> ",G->vertices[i].data);
+		visit[i]=1;
+	}
+	p=EnQueue(p,i);
+	while(EmptyQueue(p))
+	{
+		j=DeQueue(p,j);
+		arc=G->vertices[j].firstarc;
+		while(arc)
 		{
-			p=EnQueue(p,i);
-			while(!EmptyQueue(p));
+			if(visit[arc->adjvex-'A']==0)
 			{
-				u=DeQueue(p,u);
-				visit[u]=1;
-				printf("%c -> ",G->vertices[u].data);
-				for(arc=G->vertices[u].firstarc;arc;arc=arc->nextarc)
-				{
-					if(!visit[arc->adjvex-'A'])
-					{
-						p=EnQueue(p,arc->adjvex-'A');
-					}
-				}
+				visit[arc->adjvex-'A']=1;
+				printf("%c -> ",G->vertices[arc->adjvex-'A'].data);
+				p=EnQueue(p,arc->adjvex-'A');
 			}
+			arc=arc->nextarc;
 		}
 	}
 }
@@ -102,7 +117,9 @@ int main()
 	printf("print the BFS\n");
 	printf("****************************\n");
 	
-	BFS(G);
+	BFSTraverse(G);
+	
+	printf("\n");
 
 
 	

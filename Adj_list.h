@@ -1,3 +1,6 @@
+/*
+ *Adjacency list structure
+ */
 #ifndef __ADJ_LIST_H__
 #define __ADJ_LIST_H__
 
@@ -23,6 +26,5 @@ typedef struct ALGraph
 	int kind;
 }ALGraph;
 
-void BFS(ALGraph *G);
 
 #endif /* __ADJ_LIST_H__*/
